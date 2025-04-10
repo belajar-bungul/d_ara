@@ -10,7 +10,7 @@
     'company': '',
     'maintainer': '',
     'website': "",
-    'depends': ['web'],
+    'depends': ['web','base', 'mail'],
     'data': [
         'security/ir.model.access.csv',
         'data/dashboard_theme_data.xml',

@@ -16,11 +16,22 @@ export class OdooDynamicDashboard extends Component {
         this.dialog = useService("dialog");
         this.actionId = this.props.actionId
         this.rpc = rpc;
+        this.state = {
+            isSystemGroup: false,  // default value until it's fetched
+        };
         onWillStart(async () => {
             await loadJS("https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js")
             await loadJS("https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js")
             await loadJS("https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js")
+            const val_usr = await this.orm.call(
+                'dashboard.theme',    // model name
+                'has_system_group',   // method name
+                [[]]
+            );
+            this.state.isSystemGroup = val_usr;
         })
+        
+        
         onMounted(()=>{
             this.renderDashboard();
         })

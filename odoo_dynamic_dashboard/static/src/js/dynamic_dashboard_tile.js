@@ -1,7 +1,7 @@
 /** @odoo-module **/
 import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
 import { _t } from "@web/core/l10n/translation";
-const { Component, xml } = owl;
+const { Component, xml,onWillStart } = owl;
 import { rpc } from "@web/core/network/rpc";
 
 export class DynamicDashboardTile extends Component {
@@ -10,6 +10,19 @@ export class DynamicDashboardTile extends Component {
         this.doAction = this.props.doAction.doAction;
         this.dialog = this.props.dialog;
         this.orm = this.props.orm;
+        this.state = {
+            isSystemGroup: false,  // default value until it's fetched
+        };
+        onWillStart(async () => {
+
+            const val_usr = await this.orm.call(
+                'dashboard.theme',    // model name
+                'has_system_group',   // method name
+                [[]]
+            );
+            this.state.isSystemGroup = val_usr;
+        })
+        
     }
     // Function to get the configuration of the tile
     async getConfiguration(ev){
@@ -63,10 +76,10 @@ DynamicDashboardTile.template = xml `
         t-att-style="this.props.widget.color+this.props.widget.text_color+ 'height:'+this.props.widget.height+';width:'+this.props.widget.width + '; transform: translate('+ this.props.widget.translate_x +', '+ this.props.widget.translate_y +');'">
         <div t-att-style="this.props.widget.color+this.props.widget.text_color"
             class="d-flex align-items-center  w-100  my-3">
-            <a class="block_setting tile_edit tile-container__setting-icon" style="color:black;" t-on-click="(ev) => this.getConfiguration(ev)" >
+            <a t-if="state.isSystemGroup" class="block_setting tile_edit tile-container__setting-icon" style="color:black;" t-on-click="(ev) => this.getConfiguration(ev)" >
                 <i class="fa fa-edit"/>
             </a>
-            <a class="block_delete tile_edit tile-container__delete-icon" style="color:black;" t-on-click="(ev) => this.removeTile(ev)">
+            <a t-if="state.isSystemGroup" class="block_delete tile_edit tile-container__delete-icon" style="color:black;" t-on-click="(ev) => this.removeTile(ev)">
                 <i class="fa fa-times"/>
             </a>
             <div t-att-style="this.props.widget.icon_color"

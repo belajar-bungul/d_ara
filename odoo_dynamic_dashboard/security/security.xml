@@ -3,7 +3,6 @@
 <odoo>
     <record id="group_dashboard_custome" model="res.groups">
         <field name="name">Editor Dashboard</field>
-        <field name="category_id" ref="base.module_category_user_type"/>
         <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
     </record>
 

@@ -11,10 +11,20 @@ export class DynamicDashboardChart extends Component {
         this.doAction = this.props.doAction.doAction;
         this.chartRef = useRef("chart");
         this.dialog = this.props.dialog;
+        this.orm = this.props.orm;
+        this.state = {
+            isSystemGroup: false,  // default value until it's fetched
+        };
         onWillStart(async () => {
             await loadJS("https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js")
             await loadJS("https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js")
             await loadJS("https://cdn.jsdelivr.net/npm/exceljs@4.4.0/dist/exceljs.min.js")
+            const val_usr = await this.orm.call(
+                'dashboard.theme',    // model name
+                'has_system_group',   // method name
+                [[]]
+            );
+            this.state.isSystemGroup = val_usr;
         })
         onMounted(()=> this.renderChart())
     }
@@ -177,33 +187,27 @@ DynamicDashboardChart.template = xml`
         t-att-style="'height:'+this.props.widget.height+'; width:'+ this.props.widget.width+ '; transform: translate('+ this.props.widget.translate_x +', '+ this.props.widget.translate_y +'); background-color: white !important;'"
         t-att-data-id="this.props.widget.id">
         <div class="card-body mt-1" id="in_ex_body_hide">
-
-            <div class="block_edit block_setting" t-on-click="(ev) => this.getConfiguration(ev)">
+            <div t-if="state.isSystemGroup" class="block_edit block_setting" t-on-click="(ev) => this.getConfiguration(ev)">
                 <i title="Configuration"
                     class="fa fa-pencil block_setting chart-edit"/>
             </div>
-
             <div class="block_edit block_image" data-type="png" t-on-click="(ev) => this.exportItem(ev)">
                 <i title="Save As Image"
                     class="bi bi-image block_image chart-image"/>
             </div>
-
             <div class="block_edit block_pdf" data-type="pdf" t-on-click="(ev) => this.exportItem(ev)">
                 <i title="Export to PDF"
                     class="bi bi-file-earmark-pdf block_pdf chart-pdf"/>
             </div>
-
             <div class="block_edit block_csv" t-att-data-id="this.props.widget.id" data-type="csv" t-on-click="(ev) => this.exportItem(ev)">
                 <i title="Export to CSV"
                     class="bi bi-filetype-csv block_csv chart-csv"/>
             </div>
-
             <div class="block_edit block_xlsx" t-att-data-id="this.props.widget.id" data-type="xlsx" t-on-click="(ev) => this.exportItem(ev)">
                 <i title="Export to XLSX"
                     class="fa fa-file-excel-o block_xlsx chart-xlsx"/>
             </div>
-
-            <div class="block_edit block_delete" t-on-click="(ev) => this.removeTile(ev)">
+            <div t-if="state.isSystemGroup" class="block_edit block_delete" t-on-click="(ev) => this.removeTile(ev)">
                 <i title="Delete"
                     class="fa fa-times block_delete chart-setting"/>
             </div>

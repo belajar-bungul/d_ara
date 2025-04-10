@@ -32,3 +32,7 @@ class DashboardTheme(models.Model):
         """
         records = self.search_read([], ['name', 'style'])
         return records
+    
+    def has_system_group(self):
+        user = self.env.user
+        return user.has_group('odoo_dynamic_dashboard.group_dashboard_custome')

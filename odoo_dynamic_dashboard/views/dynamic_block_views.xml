@@ -81,8 +81,5 @@
         <field name="view_mode">list,form</field>
         <field name="context">{'default_edit_mode' : True}</field>
     </record>
-    <!--Menu Item for the model Dashboard Blocks-->
-    <menuitem name="Components" id="dashboard_block_menu"
-              parent="odoo_dynamic_dashboard.odoo_dynamic_configuration"
-              sequence="10" action="dashboard_block_action"/>
+    
 </odoo>

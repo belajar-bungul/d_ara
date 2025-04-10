@@ -49,8 +49,15 @@
     </record>
     <!--Menu Item for the model Dashboard Blocks-->
     <menuitem name="Configuration" id="odoo_dynamic_configuration"
-              parent="odoo_dynamic_dashboard.menu_dashboard"/>
+              parent="odoo_dynamic_dashboard.menu_dashboard"     
+              groups="odoo_dynamic_dashboard.group_dashboard_custome"
+              />
     <menuitem name="Color Themes Gradient" id="dashboard_theme_menu"
               parent="odoo_dynamic_dashboard.odoo_dynamic_configuration"
-              sequence="45" action="dashboard_theme_action"/>
+              sequence="45" action="dashboard_theme_action"
+              groups="odoo_dynamic_dashboard.group_dashboard_custome"/>
+    <menuitem name="Components" id="dashboard_block_menu"
+              parent="odoo_dynamic_dashboard.odoo_dynamic_configuration"
+              sequence="10" action="dashboard_block_action"
+              groups="odoo_dynamic_dashboard.group_dashboard_custome"/>
 </odoo>

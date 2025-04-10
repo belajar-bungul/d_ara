@@ -3,7 +3,7 @@
     <!--DASHBOARD VIEW WITH NAVIGATION-BAR, INTERACTJS TEMPLATE-->
     <t t-name="owl.OdooDynamicDashboard" owl="1">
         <div class="container" style="min-height:-webkit-fill-available;">
-            <div class="navbar navbar-expand-md navbar-light mb-4 navbar-style border-bottom"
+            <div t-if="state.isSystemGroup" class="navbar navbar-expand-md navbar-light mb-4 navbar-style border-bottom"
                  role="navigation">
                 <button class="navbar-toggler" 
                         id="dropdownNavbar" 
@@ -12,7 +12,8 @@
                         data-target="#navbarCollapse"
                         aria-controls="navbarCollapse" 
                         aria-expanded="false"
-                        aria-label="Toggle navigation">
+                        aria-label="Toggle navigation"
+                        >
                     <span class="navbar-toggler-icon"/>
                 </button>
 
