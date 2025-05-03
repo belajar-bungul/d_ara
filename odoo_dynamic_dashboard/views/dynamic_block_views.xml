@@ -5,7 +5,11 @@
         <field name="name">dashboard.block.view.form</field>
         <field name="model">dashboard.block</field>
         <field name="arch" type="xml">
+
             <form>
+            <header>
+                <button name="create_menu_item" type="object" string="Create Menu Item"/>
+            </header>
                 <sheet>
                     <group>
                         <group>
@@ -16,8 +20,8 @@
                             </div>
                         </group>
                     </group>
-                        <group string="Component Style">
-                            <group>
+                        <group >
+                            <group string="Component Style">
                                 <field name="type" string="Component Type" required="1"/>
                                 <field name="graph_type"
                                     invisible="type == 'tile'"/>
@@ -36,6 +40,12 @@
                                 <field name="text_color"
                                     invisible="type == 'graph'"
                                     widget="color"/>
+                            </group>
+                            <group string="Available Menu Settings">
+                                <field name="activate_menu" string = "Active"/>
+                                <field name="menu_root" string="Inherited Menu"/>
+                                <field name="sequence_menu" string="Sequence Inherit" />
+                                <field name="title_menu" string="Title Menu" />
                             </group>
                         </group>
                         <group string="Component Values">

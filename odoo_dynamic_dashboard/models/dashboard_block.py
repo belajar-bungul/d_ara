@@ -65,6 +65,26 @@ class DashboardBlock(models.Model):
                              help="Added model_id model")
     edit_mode = fields.Boolean(string="Edit Mode",
                                help="Enable to edit chart and tile",)
+    
+    #feature menu dashboard
+    activate_menu = fields.Boolean()
+    menu_root = fields.Char()
+    sequence_menu = fields.Integer()
+    title_menu = fields.Char()
+
+    def create_menu_item(self):
+        for res in self:
+            if res.activate_menu and res.menu_root and res.client_action_id:
+                menu_model = self.env['ir.ui.menu']
+                menu_item_vals = {
+                    'name': res.title_menu or res.name,
+                    'parent_id': self.env.ref(res.menu_root).id,
+                    'sequence': res.sequence_menu or 10,
+                    'action': f'{res.client_action_id._name},{res.client_action_id.id}',
+                    'active': True,
+                    
+                }
+                menu_model.create(menu_item_vals)
 
     @api.onchange('model_id')
     def _onchange_model_id(self):
